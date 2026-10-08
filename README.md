@@ -9,7 +9,7 @@
 |---|---|
 | 01闭包与变量声明.md | 闭包 / var-let-const / 两数之和 |
 | 02事件循环异步编程.md | 事件循环 / Promise / async-await / 模块化 |
-
+| vue登录鉴权 | vue/vite/pinia/router实现登录鉴权 |
 ## 学习进度
 - [x] JS 基础语法、作用域、闭包、原型链
 - [x] 异步：事件循环、Promise、async/await

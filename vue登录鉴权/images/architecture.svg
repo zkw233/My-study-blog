@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 636" width="100%" role="img">
+  <title>功能分层与数据流向总图</title>
+  <desc>视图层内含 Login 与 Home 两个页面；请求沿层间下行通道逐层传递，响应沿上行通道逐层返回并停在状态层，视图层靠状态变化自动重渲染。</desc>
+
+  <!-- 补全样式：原文件用了 class="th"/"ts" 但没有定义，直接内嵌会掉样式 -->
+  <style>
+    .th { font-size: 14px; font-weight: 600; fill: #1f2937;
+          font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; }
+    .ts { font-size: 12px; fill: #4b5563;
+          font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; }
+  </style>
+
+  <defs>
+    <!-- 原文件用 stroke="context-stroke" 继承线条颜色，兼容性不佳；改为蓝/绿两个独立箭头 -->
+    <marker id="aBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="aGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect x="40" y="40" width="340" height="128" rx="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text class="th" x="60" y="62" dominant-baseline="central">视图层 · 界面（用户看得见的那层）</text>
+  <rect x="56" y="76" width="148" height="68" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+  <text class="th" x="70" y="94" dominant-baseline="central">Login.vue</text>
+  <text class="ts" x="70" y="114" dominant-baseline="central">采集账号、密码</text>
+  <text class="ts" x="70" y="132" dominant-baseline="central">点登录 → 发起请求</text>
+  <rect x="216" y="76" width="148" height="68" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+  <text class="th" x="230" y="94" dominant-baseline="central">Home.vue</text>
+  <text class="ts" x="230" y="114" dominant-baseline="central">读 store 里用户名</text>
+  <text class="ts" x="230" y="132" dominant-baseline="central">点退出 → 清数据</text>
+  <path d="M130 168 V224" stroke="#185FA5" stroke-width="1.5" fill="none" marker-end="url(#aBlue)"/>
+  <path d="M290 224 V168" stroke="#0F6E56" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#aGreen)"/>
+  <text x="400" y="186" font-size="12" fill="#185FA5" dominant-baseline="central">↓ 请求：账号、密码（字符串）</text>
+  <text x="400" y="206" font-size="12" fill="#0F6E56" dominant-baseline="central">↑ 更新：状态一变，视图自动重渲染</text>
+
+  <rect x="40" y="224" width="340" height="56" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+  <text class="th" x="60" y="244" dominant-baseline="central">状态层 · stores/auth.ts（Pinia）</text>
+  <text class="ts" x="60" y="264" dominant-baseline="central">登录状态唯一管家，决定数据落哪个仓库</text>
+  <path d="M130 280 V336" stroke="#185FA5" stroke-width="1.5" fill="none" marker-end="url(#aBlue)"/>
+  <path d="M290 336 V280" stroke="#0F6E56" stroke-width="1.5" fill="none" marker-end="url(#aGreen)"/>
+  <text x="400" y="298" font-size="12" fill="#185FA5" dominant-baseline="central">↓ 请求：调用登录动作，带类型约束</text>
+  <text x="400" y="318" font-size="12" fill="#0F6E56" dominant-baseline="central">↑ 返回：后端响应对象（含 data）</text>
+
+  <rect x="40" y="336" width="340" height="56" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+  <text class="th" x="60" y="356" dominant-baseline="central">接口层 · api/auth.ts</text>
+  <text class="ts" x="60" y="376" dominant-baseline="central">声明调哪个接口、参数与返回类型</text>
+  <path d="M130 392 V448" stroke="#185FA5" stroke-width="1.5" fill="none" marker-end="url(#aBlue)"/>
+  <path d="M290 448 V392" stroke="#0F6E56" stroke-width="1.5" fill="none" marker-end="url(#aGreen)"/>
+  <text x="400" y="410" font-size="12" fill="#185FA5" dominant-baseline="central">↓ 请求：接口名 + 请求体对象</text>
+  <text x="400" y="430" font-size="12" fill="#0F6E56" dominant-baseline="central">↑ 返回：解析好的 JSON 对象</text>
+
+  <rect x="40" y="448" width="340" height="56" rx="8" fill="#FFFFFF" stroke="#378ADD" stroke-width="0.5"/>
+  <text class="th" x="60" y="468" dominant-baseline="central">网络层 · api/request.ts + fetch</text>
+  <text class="ts" x="60" y="488" dominant-baseline="central">真的发请求、把响应拆成 JSON、统一抛错</text>
+  <path d="M130 504 V560" stroke="#185FA5" stroke-width="1.5" fill="none" marker-end="url(#aBlue)"/>
+  <path d="M290 560 V504" stroke="#0F6E56" stroke-width="1.5" fill="none" marker-end="url(#aGreen)"/>
+  <text x="400" y="522" font-size="12" fill="#185FA5" dominant-baseline="central">↓ 请求：HTTP POST（JSON 文本）</text>
+  <text x="400" y="542" font-size="12" fill="#0F6E56" dominant-baseline="central">↑ 返回：HTTP 响应（JSON 文本）</text>
+
+  <rect x="40" y="560" width="340" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text class="th" x="60" y="580" dominant-baseline="central">数据层 · mock/server.mjs（假后端）</text>
+  <text class="ts" x="60" y="600" dominant-baseline="central">校验账号、签发 token、登记通行证</text>
+</svg>

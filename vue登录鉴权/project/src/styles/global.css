@@ -1,0 +1,66 @@
+/* ===================================================================
+   全局重置 + 页面级样式（必须在 main.ts 里 import，不能放进 scoped）
+   注意：body / html / #app 这类「组件外」的元素，永远无法用 scoped 样式命中
+   =================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+  color: #eaf6ff;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  /* 背景：优先用背景图，没有图时用深色底 + 渐变兜底
+     ↓ 需要背景图时，把 bg.jpg 放到 public/ 目录，下面这行会自动生效 */
+  background:
+    /* 装饰光斑 radial-gradient(
+      900px 520px at 88% -10%,
+      rgba(139, 92, 246, 0.14),
+      transparent 60%
+    ),
+    radial-gradient(1000px 620px at -10% 110%, rgba(34, 211, 238, 0.12), transparent 60%),
+    linear-gradient(rgba(4, 8, 15, 0.72), rgba(4, 8, 15, 0.88)), */
+    url('/bg.jpg') center / cover no-repeat fixed,
+    #04080f;
+}
+
+/* 网格 + 光斑装饰层 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(94, 180, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 180, 255, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+}
+
+/* ===================================================================
+   关键修复：让 #app 撑满视口并成为 flex 居中容器
+   Vue 挂载点是 <div id="app">，它夹在 body 和组件之间。
+   如果只给 body 设 flex，居中效果会被 #app 这一层吃掉。
+   =================================================================== */
+#app {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}

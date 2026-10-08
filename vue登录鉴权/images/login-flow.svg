@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 928" width="100%" role="img">
+  <title>登录执行完整流程图（含成功与失败分支）</title>
+  <desc>从点击登录到进入首页的完整链路，含成功与失败两条分支。</desc>
+
+  <!-- 补全样式：原文件用了 class="th"/"ts"/"arr" 但均未定义 -->
+  <style>
+    .th { font-size: 14px; font-weight: 600; fill: #1f2937;
+          font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; }
+    .ts { font-size: 12px; fill: #4b5563;
+          font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; }
+    /* .arr 必须定义：否则 path 默认黑色填充，箭头线会显示异常 */
+    .arr { stroke: #185FA5; stroke-width: 1.5; fill: none; }
+  </style>
+
+  <defs>
+    <!-- 原用 context-stroke（兼容性差），改为固定蓝色 -->
+    <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <g>
+    <rect x="180" y="40" width="320" height="44" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text class="th" x="340" y="62" text-anchor="middle" dominant-baseline="central">用户在登录页点「登 录」</text>
+  </g>
+  <path class="arr" d="M340 84 V120" marker-end="url(#arrow2)"/>
+  <g>
+    <rect x="180" y="120" width="320" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text class="th" x="340" y="140" text-anchor="middle" dominant-baseline="central">Login.vue · handleLogin()</text>
+    <text class="ts" x="340" y="160" text-anchor="middle" dominant-baseline="central">空值校验 → 开启 loading 防重复提交</text>
+  </g>
+  <path class="arr" d="M340 176 V212" marker-end="url(#arrow2)"/>
+  <g>
+    <rect x="180" y="212" width="320" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text class="th" x="340" y="232" text-anchor="middle" dominant-baseline="central">store · loginStore(u, p)</text>
+    <text class="ts" x="340" y="252" text-anchor="middle" dominant-baseline="central">Pinia action 接管登录</text>
+  </g>
+  <path class="arr" d="M340 268 V304" marker-end="url(#arrow2)"/>
+  <g>
+    <rect x="180" y="304" width="320" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text class="th" x="340" y="324" text-anchor="middle" dominant-baseline="central">auth.ts → request.ts → fetch</text>
+    <text class="ts" x="340" y="344" text-anchor="middle" dominant-baseline="central">POST /api/login（JSON 请求体）</text>
+  </g>
+  <path class="arr" d="M340 360 V396" marker-end="url(#arrow2)"/>
+  <g>
+    <rect x="180" y="396" width="320" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text class="th" x="340" y="416" text-anchor="middle" dominant-baseline="central">mock/server.mjs 校验</text>
+    <text class="ts" x="340" y="436" text-anchor="middle" dominant-baseline="central">查 USERS 表 · 模拟网络延迟 600ms</text>
+  </g>
+  <path class="arr" d="M340 452 V488" marker-end="url(#arrow2)"/>
+  <polygon points="340,488 430,520 340,552 250,520" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text class="th" x="340" y="520" text-anchor="middle" dominant-baseline="central">校验通过？</text>
+  <path class="arr" d="M250 520 H205 V588" marker-end="url(#arrow2)"/>
+  <path class="arr" d="M430 520 H495 V588" marker-end="url(#arrow2)"/>
+  <text class="ts" x="222" y="572" text-anchor="middle" dominant-baseline="central">是</text>
+  <text class="ts" x="478" y="572" text-anchor="middle" dominant-baseline="central">否</text>
+  <g>
+    <rect x="90" y="588" width="230" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text class="th" x="205" y="608" text-anchor="middle" dominant-baseline="central">200 · 返回 token+用户信息</text>
+    <text class="ts" x="205" y="628" text-anchor="middle" dominant-baseline="central">后端记入 tokenMap</text>
+  </g>
+  <path class="arr" d="M205 644 V680" marker-end="url(#arrow2)"/>
+  <g>
+    <rect x="90" y="680" width="230" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text class="th" x="205" y="700" text-anchor="middle" dominant-baseline="central">写入 Pinia + 本地存储</text>
+    <text class="ts" x="205" y="720" text-anchor="middle" dominant-baseline="central">登录状态持久化</text>
+  </g>
+  <path class="arr" d="M205 736 V772" marker-end="url(#arrow2)"/>
+  <g>
+    <rect x="90" y="772" width="230" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text class="th" x="205" y="792" text-anchor="middle" dominant-baseline="central">router.push('/home')</text>
+    <text class="ts" x="205" y="812" text-anchor="middle" dominant-baseline="central">守卫查到 token → 放行</text>
+  </g>
+  <path class="arr" d="M205 828 V864" marker-end="url(#arrow2)"/>
+  <g>
+    <rect x="90" y="864" width="230" height="44" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text class="th" x="205" y="886" text-anchor="middle" dominant-baseline="central">Home.vue 欢迎页</text>
+  </g>
+  <g>
+    <rect x="380" y="588" width="230" height="56" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text class="th" x="495" y="608" text-anchor="middle" dominant-baseline="central">401 · 用户名或密码错误</text>
+    <text class="ts" x="495" y="628" text-anchor="middle" dominant-baseline="central">统一话术，防止坏人试探账号</text>
+  </g>
+  <path class="arr" d="M495 644 V680" marker-end="url(#arrow2)"/>
+  <g>
+    <rect x="380" y="680" width="230" height="56" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text class="th" x="495" y="700" text-anchor="middle" dominant-baseline="central">request 抛出 Error</text>
+    <text class="ts" x="495" y="720" text-anchor="middle" dominant-baseline="central">被 Login 的 catch 接住</text>
+  </g>
+  <path class="arr" d="M495 736 V772" marker-end="url(#arrow2)"/>
+  <g>
+    <rect x="380" y="772" width="230" height="56" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text class="th" x="495" y="792" text-anchor="middle" dominant-baseline="central">errMsg 红字提示</text>
+    <text class="ts" x="495" y="812" text-anchor="middle" dominant-baseline="central">loading 复位 · 可重试</text>
+  </g>
+</svg>

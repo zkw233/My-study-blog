@@ -22,7 +22,8 @@ git push
 说明
 先 pull 再 push
 如果你在别的电脑上改过，先 pull 把远程的拉下来，避免冲突
-commit 说明要写清楚
+commit 说明要写清 
+楚
 写 "新增：事件循环博客"，别写 "update"——面试官会翻你的提交历史
 千万别用 git push -f
 强制推送会真的覆盖远程历史，新手最容易闯祸，看到 -f就躲开
@@ -30,6 +31,9 @@ git add . vs git add 文件名
 . 提交全部改动；只想提交某一个文件就写文件名
 push 又报 443
 网络问题（你上次遇到过的），换网络/重试即可，你的 commit 是安全的
+
+
+git log --oneline --graph --all -10
 
 
 git log                      # 看历史，找到想回去的版本号
